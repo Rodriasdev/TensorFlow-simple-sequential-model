@@ -14,7 +14,13 @@
     <div class="container text-center text-white mt-5">
         <div class="row">
             <h1 class="">TensorFlow</h1>
+            <div>
                 <p>Formula: 2x+6</p>
+                <div class="d-flex justify-content-center">
+                    <button id="entrenar" class="btn btn-outline-info">Entrenar modelo</button>
+                    <div id="resultEntrenamiento"></div>
+                </div>
+            </div>
             <div class="col-6 mt-5">
                 <div class="mb-1">
                     <input class="rounded w-75" id="valorX" type="number">
@@ -27,15 +33,10 @@
         </div>
     </div>
     <script>
-        const btnCalcular = document.getElementById('calcular');
+        let model;
 
-        btnCalcular.addEventListener('click', async () => {
-            const valorX = document.getElementById('valorX').value;
-            
-            if (valorX == '') return document.getElementById('resultado').innerHTML =
-                '<p class="bg-danger rounded">Tienes que ingresar algun número</p>'
-
-            const model = tf.sequential();
+        const entrenar = document.getElementById('entrenar').addEventListener('click', async () => {
+            model = tf.sequential();
             model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
 
             model.compile({
@@ -48,12 +49,18 @@
 
             await model.fit(xs, ys, { epochs: 250 });
 
-            document.getElementById('resultado').innerHTML = `<p class="bg-success rounded">${model.predict(tf.tensor2d([parseFloat(valorX)], [1, 1]))}</p>`
-                
-
+            document.getElementById('resultEntrenamiento').innerHTML = `<p class="bg-success rounded mt-3">!Modelo entrenado con exito¡</p>`
         });
 
+        document.getElementById('calcular').addEventListener('click', async () => {
+            const valorX = parseFloat(document.getElementById('valorX').value);
 
+            if (isNaN(valorX)) return document.getElementById('resultado').innerHTML =
+                '<p class="bg-danger rounded">Tienes que ingresar algún número</p>';
+
+            const prediction = model.predict(tf.tensor2d([valorX], [1, 1])).dataSync()[0];
+            document.getElementById('resultado').innerHTML = `<p class="bg-success rounded">${prediction}</p>`;
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
