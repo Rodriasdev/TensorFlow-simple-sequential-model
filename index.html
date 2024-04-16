@@ -29,7 +29,7 @@
                 <div class="mb-1">
                     <input class="rounded w-75" id="valorX" type="number">
                 </div>
-                <button class="btn btn-outline-success" id="calcular">CALCULAR</button>
+                <button class="btn btn-outline-success" id="predecir">Predecir</button>
             </div>
             <div class="col mt-5">
                 <div id="resultado"></div>
@@ -55,7 +55,7 @@
             document.getElementById('resultEntrenamiento').innerHTML = `<p class="bg-success rounded mt-3">¡Modelo entrenado con éxito!</p>`
         });
 
-        document.getElementById('calcular').addEventListener('click', async () => {
+        document.getElementById('predecir').addEventListener('click', async () => {
             const valorX = parseFloat(document.getElementById('valorX').value);
 
             if (isNaN(valorX)) return document.getElementById('resultado').innerHTML =
